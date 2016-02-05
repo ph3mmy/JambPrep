@@ -1,0 +1,80 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/chosen_account_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/navdrawer_chosen_account_height">
+
+        <ImageView
+            android:id="@+id/profile_cover_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/nav_prep"
+            android:tint="@color/session_photo_scrim"/>
+
+
+        <RelativeLayout
+            android:id="@+id/chosen_account_content_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/keyline_1"
+            android:paddingRight="@dimen/keyline_1"
+            android:paddingTop="@dimen/keyline_1">
+
+            <ng.com.jcedar.jambprep.ui.view.BezelImageView
+                android:id="@+id/profile_image"
+                android:layout_width="@dimen/navdrawer_profile_image_size"
+                android:layout_height="@dimen/navdrawer_profile_image_size"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher"
+                app:maskDrawable="@drawable/circle_mask" />
+
+            <TextView
+                android:id="@+id/profile_role_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/profile_image"
+                android:layout_alignParentBottom="true"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingBottom="16dp"
+                android:singleLine="true"
+                android:text="Admin"
+                android:textColor="@color/body_text_2_inverse"
+                android:textSize="@dimen/text_size_medium" />
+
+            <TextView
+                android:id="@+id/profile_name_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/profile_role_text"
+                android:layout_alignLeft="@id/profile_image"
+
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="tosin.salami@powercollectng.com"
+                android:textColor="@color/body_text_1_inverse"
+                android:textSize="@dimen/text_size_sixteen" />
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+    <ListView
+        android:id="@+id/drawer_listview"
+        style="@style/Theme.Gardener.List.Nav"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#dadada"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:listSelector="@drawable/navdrawer_background_selector"
+        android:textStyle="bold" />
+</LinearLayout>

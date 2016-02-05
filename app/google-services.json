@@ -1,0 +1,60 @@
+{
+  "project_info": {
+    "project_id": "jamb-prep-3ffd3",
+    "project_number": "203499132964",
+    "name": "Jamb Prep"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:203499132964:android:8b21d9fb1c6b8800",
+        "client_id": "android:ng.com.jcedar.jambprep",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "ng.com.jcedar.jambprep"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "203499132964-fl3698dmda6pt71ou77983n4ef6snju3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ng.com.jcedar.jambprep",
+            "certificate_hash": "55F71EB0109700D21888276332C28B0A10F7BAD5"
+          }
+        },
+        {
+          "client_id": "203499132964-rbi30bm60epgk505htme4e9erh8crkr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "203499132964-rbi30bm60epgk505htme4e9erh8crkr9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
