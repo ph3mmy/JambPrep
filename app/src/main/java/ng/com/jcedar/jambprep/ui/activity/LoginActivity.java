@@ -1,13 +1,19 @@
 package ng.com.jcedar.jambprep.ui.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,17 +27,9 @@ import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.dd.CircularProgressButton;
-import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.Scopes;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.Result;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.plus.Plus;
@@ -40,13 +38,16 @@ import com.google.android.gms.plus.model.people.Person;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import ng.com.jcedar.jambprep.R;
+import ng.com.jcedar.jambprep.helper.AppSettings;
 import ng.com.jcedar.jambprep.helper.PrefUtils;
 import ng.com.jcedar.jambprep.ui.BaseActivity;
-
-import static android.os.AsyncTask.*;
 
 
 /**
@@ -77,13 +78,17 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
             CircularProgressButton btnSignIn;
              Button btnSignOut, btnRevokeAccess, btEnter;
     private ImageView imgProfilePic;
-    private TextView txtName, txtEmail;
-    private LinearLayout llProfileLayout, llWelcome;
-    EditText editText, etName;
+    private TextView txtName, txtEmail, title;
+    private LinearLayout llProfileLayout, llWelcome, llField;
+    ImageView g_icon;
+    EditText etPhone, etName;
     LinearLayout buttonContainer;
     NetworkResponse response;
-    String personPhotoUrl,email,personName;
+    String personPhotoUrl,personName;
+    String email = "";
+    Boolean isSignedIn;
     Bitmap bResult;
+    String register_url = AppSettings.SERVER_URL;
 
 
     @Override
@@ -96,11 +101,14 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         btnSignOut = (Button) findViewById(R.id.btn_sign_out);
         btnRevokeAccess = (Button) findViewById(R.id.btn_revoke_access);
         imgProfilePic = (ImageView) findViewById(R.id.imgProfilePic);
+        g_icon = (ImageView) findViewById(R.id.google_icon);
         txtName = (TextView) findViewById(R.id.txtName);
         txtEmail = (TextView) findViewById(R.id.txtEmail);
+        title = (TextView) findViewById(R.id.title_text);
         llProfileLayout = (LinearLayout) findViewById(R.id.llProfile);
         llWelcome = (LinearLayout) findViewById(R.id.llWelcomeIC);
-        editText = (EditText) findViewById(R.id.etPhone);
+        llField = (LinearLayout) findViewById(R.id.llField);
+        etPhone = (EditText) findViewById(R.id.etPhone);
         etName = (EditText) findViewById(R.id.etName_login);
         buttonContainer = (LinearLayout) findViewById(R.id.button_container);
 //        btEnter = (Button) findViewById(R.id.btn_enter);
@@ -109,7 +117,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         btnSignIn.setOnClickListener(this);
         btnSignOut.setOnClickListener(this);
         btnRevokeAccess.setOnClickListener(this);
-        btEnter.setOnClickListener(this);
+//        btEnter.setOnClickListener(this);
 
         // Initializing google plus api client
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -123,6 +131,38 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
     public void onStart() {
         super.onStart();
+
+
+        ConnectivityManager cm =
+                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        if (!isConnected){
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("No Internet Connectivity detected! Check your Internet Connectivity settings")
+                    .setCancelable(false)
+                    .setPositiveButton("Check Settings", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivity(new Intent(Settings.ACTION_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton("Quit", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+
+            return;
+
+        }else
+
         mGoogleApiClient.connect();
     }
 
@@ -209,6 +249,12 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         // Update the UI after signin
         updateUI(true);
 
+        Log.e(TAG, "SET email b4 registering in HIDEuI  " + email);
+        if (!(email == "")){
+            registerUser();
+        }
+
+
     }
 
     @Override
@@ -222,13 +268,24 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
      * */
     private void updateUI(boolean isSignedIn) {
         if (isSignedIn) {
-            btnSignIn.setVisibility(View.GONE);
-            btnSignOut.setVisibility(View.VISIBLE);
-            btnRevokeAccess.setVisibility(View.VISIBLE);
-            llProfileLayout.setVisibility(View.VISIBLE);
-            llWelcome.setVisibility(View.GONE);
+//            btnSignIn.setVisibility(View.GONE);
+//            btnSignOut.setVisibility(View.VISIBLE);
+//            btnRevokeAccess.setVisibility(View.VISIBLE);
+//            llProfileLayout.setVisibility(View.VISIBLE);
+            imgProfilePic.setVisibility(View.VISIBLE);
+            llField.setVisibility(View.GONE);
+            g_icon.setVisibility(View.GONE);
+            etName.setVisibility(View.GONE);
+            etPhone.setVisibility(View.GONE);
+            txtName.setVisibility(View.VISIBLE);
+            txtEmail.setVisibility(View.VISIBLE);
+            title.setVisibility(View.GONE);
+
+
         } else {
-            btnSignIn.setVisibility(View.VISIBLE);
+
+            Toast.makeText(LoginActivity.this, "Check Your Network", Toast.LENGTH_SHORT).show();
+//            btnSignIn.setVisibility(View.VISIBLE);
             btnSignOut.setVisibility(View.GONE);
             btnRevokeAccess.setVisibility(View.GONE);
             llProfileLayout.setVisibility(View.GONE);
@@ -285,6 +342,14 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
             this.bmImage = bmImage;
         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            buttonContainer.setBackgroundResource(R.drawable.t_button);
+            btnSignIn.setIndeterminateProgressMode(true);
+            btnSignIn.setProgress(50);
+        }
+
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
             Bitmap mIcon11 = null;
@@ -300,7 +365,14 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
-            PrefUtils.setPhoto(LoginActivity.this,result);
+            buttonContainer.setBackgroundResource(R.drawable.transparent_button);
+            btnSignIn.setProgress(0);
+            Toast.makeText(LoginActivity.this,"Profile Loaded",Toast.LENGTH_SHORT).show();
+
+//            btnSignIn.setEnabled(true);
+            PrefUtils.setPhoto(LoginActivity.this, result);
+            /*String m = PrefUtils.encodeTobase64(result);
+            Log.e(TAG, "Encoded Profile image " + m);*/
 
         }
     }
@@ -327,33 +399,45 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                 boolean cancel = false;
                 View focusView = null;
                 String nameString = etName.getText().toString();
-                String phoneString = editText.getText().toString();
+                String phoneString = etPhone.getText().toString();
+
+                if (TextUtils.isEmpty(nameString) & TextUtils.isEmpty(phoneString)){
+                    Snackbar.make(v, "Please enter your Alias and Phone Number", Snackbar.LENGTH_SHORT).show();
+                    etName.setError("Name field cannot be empty");
+                    etPhone.setError("Phone Number cannot be empty");
+
+                }
                 if (TextUtils.isEmpty(phoneString)){
                     // show snackbar to enter credentials
                     Snackbar.make(v, "Please enter your Phone Number", Snackbar.LENGTH_SHORT).show();
-                    editText.setError("Phone Number cannot be empty");
-                    focusView = editText;
+                    etPhone.setError("Phone Number cannot be empty");
+                    focusView = etPhone;
                     cancel = true;
+                    break;
                 }
 
-                if (!(TextUtils.getTrimmedLength(phoneString) > 11)){
+                if (!(TextUtils.getTrimmedLength(phoneString) > 10)){
                     Snackbar.make(v, "Phone Number Cannot be less than 11 characters", Snackbar.LENGTH_SHORT).show();
-                    editText.setError("Invalid Phone Number");
-                    focusView = editText;
+                    etPhone.setError("Invalid Phone Number");
+                    focusView = etPhone;
                     cancel = true;
+                    break;
                 }
 
                 if (TextUtils.isEmpty(nameString)){
                     // show snackbar to enter credentials
                     Snackbar.make(v, "Please enter your Alias or Name", Snackbar.LENGTH_SHORT).show();
-                    editText.setError("Invalid Name");
-                    focusView = editText;
+                    etName.setError("Invalid Name");
+                    focusView = etName;
                     cancel = true;
+                    break;
                 }
 
                 else
-                //save gmail
-//                btEnter.isEnabled();
+                    for (int i = 0; i < 1000; i++) {
+                        Log.e("waste some time ", "" + i);
+
+                    }
                     signInWithGplus();
 
                 break;
@@ -365,12 +449,96 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
      * Revoking access from google
      * */
 
-    private void sendDetails(){
+
+    private void registerUser() {
+        String name = etName.getText().toString().trim().toLowerCase();
+        String phone = etPhone.getText().toString().trim().toLowerCase();
+        String email = this.email;
+
+        Log.e(TAG, "REGISTERING EMAIL " + email);
+
+        register(name, phone, email);
+    }
+
+    private void register(String name, String phone, String email) {
+        String urlSuffix = "?name=" + name + "&phone=" + phone + "&email=" + email;
+        class RegisterUser extends AsyncTask<String, Void, String>{
+//            ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                /*super.onPreExecute();
+                progressDialog.setMessage("Verifying email address....");
+                progressDialog.setTitle("Please Wait");
+                progressDialog.setCancelable(false);
+                progressDialog.setIndeterminate(true);
+                progressDialog.show();*/
+
+                buttonContainer.setBackgroundResource(R.drawable.t_button);
+                btnSignIn.setIndeterminateProgressMode(true);
+                btnSignIn.setProgress(50);
+            }
+
+            @Override
+            protected String doInBackground(String... params) {
+                String s = params[0];
+                BufferedReader reader = null;
+                try
+                {
+                    URL url = new URL(register_url+s);
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+                    String result;
+                    result = reader.readLine();
+
+                    for (int i = 0; i < 1000; i++) {
+                        Log.e("waste some time ", "" + i);
+
+                    }
+
+                    Log.e(TAG, "INSIDE REGISTER ASYNC  " + result);
+
+                    return result;
+                } catch (Exception e){
+                    return null;
+                }
+            }
+
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+//                progressDialog.dismiss();
+                buttonContainer.setBackgroundResource(R.drawable.transparent_button);
+                btnSignIn.setProgress(0);
+                Toast.makeText(LoginActivity.this,s,Toast.LENGTH_SHORT).show();
+
+                btnSignIn.setEnabled(true);
+            }
+        }
+
+        RegisterUser ru = new RegisterUser();
+        ru.execute(urlSuffix);
+
+        saveDetails();
+    }
+
+
+    private void saveDetails(){
         if (!(TextUtils.isEmpty(email)) || !(TextUtils.isEmpty(personPhotoUrl)) || !(TextUtils.isEmpty(personName))){
 
             PrefUtils.setEmail(this, email);
+            String m = PrefUtils.getEmail(this);
             PrefUtils.setPersonKey(this, personName);
 
+            Log.e(TAG, "gotten email " + m + personName);
+
+            Intent mIntent = new Intent(LoginActivity.this, CombinationActivity.class);
+            mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(mIntent);
+            finish();
         }
     }
 
@@ -406,7 +574,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         }
     }
 
-    class LoginCheck extends AsyncTask<String,Void,Void> {
+/*    class LoginCheck extends AsyncTask<String,Void,Void> {
 
         @Override
         protected void onPreExecute() {
@@ -518,27 +686,11 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         } else {
             displayMessage("Server down, please try again");
         }
-    }
+    }*/
 
 
-    public class PushToServer extends AsyncTask<String, Void, String>{
-        ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+/*    public class PushToServer extends AsyncTask<String, Void, String>{
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog.setTitle("Loadin");
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            return null;
-        }
-    }
+    }*/
 
 }

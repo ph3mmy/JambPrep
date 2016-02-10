@@ -28,7 +28,7 @@ public class AppSettings {
     public static DateFormat serverDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
     public static DecimalFormat decimalFormatter = new DecimalFormat("###,###.##");
 
-    public static final String SERVER_URL = "http://jambprep.jcedar.com.ng/";
+    public static final String SERVER_URL = "http://jambprep.jcedar.com.ng/register.php";
 
 
     //public static final String PROVIDER_AUTHORITY = "";

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/tab_selected_strip1">
+
+    <include layout="@layout/general_toolbar"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        card_view:cardCornerRadius="6dp"
+        card_view:elevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/subject_combo"
+            android:layout_marginBottom="10dp"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="English Language"
+        android:layout_centerInParent="true"
+        android:button="@drawable/custom_checkbox"
+        android:padding="@dimen/element_spacing_normal"
+        android:paddingBottom="5dp"
+        android:checked="true"
+        android:enabled="false"
+        android:editable="false"
+        android:id="@+id/english" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:button="@drawable/custom_checkbox"
+        android:padding="@dimen/element_spacing_normal"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:text="Accounting"
+        android:id="@+id/accounting" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:button="@drawable/custom_checkbox"
+        android:padding="@dimen/element_spacing_normal"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:text="Biology"
+        android:id="@+id/biology" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chemistry"
+        android:layout_centerInParent="true"
+        android:button="@drawable/custom_checkbox"
+        android:padding="@dimen/element_spacing_normal"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:id="@+id/chemistry" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:button="@drawable/custom_checkbox"
+        android:padding="@dimen/element_spacing_normal"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:text="Christian Religious Knowledge"
+        android:id="@+id/crk" />
+
+        <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:button="@drawable/custom_checkbox"
+        android:padding="@dimen/element_spacing_normal"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:text="Commerce"
+        android:id="@+id/comm" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:button="@drawable/custom_checkbox"
+        android:padding="@dimen/element_spacing_normal"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:text="Economics"
+        android:id="@+id/economics" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:button="@drawable/custom_checkbox"
+        android:padding="@dimen/element_spacing_normal"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:text="Geography"
+        android:id="@+id/geography" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:button="@drawable/custom_checkbox"
+        android:padding="@dimen/element_spacing_normal"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:text="Government"
+        android:id="@+id/govt" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:button="@drawable/custom_checkbox"
+        android:padding="@dimen/element_spacing_normal"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:text="Literature-In-English"
+        android:id="@+id/literature" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:button="@drawable/custom_checkbox"
+        android:padding="@dimen/element_spacing_normal"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:text="Mathematics"
+        android:id="@+id/maths" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:button="@drawable/custom_checkbox"
+        android:padding="@dimen/element_spacing_normal"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:text="Physics"
+        android:id="@+id/physics" />
+
+
+        <Button
+            android:id="@+id/btProceed"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:background="@drawable/transparent_button"
+            android:text="Proceed"
+            android:textColor="@color/theme_primary"
+            android:textSize="16sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+    </ScrollView>
+
+
+</LinearLayout>

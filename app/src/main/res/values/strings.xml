@@ -55,4 +55,5 @@
     <string name="btn_revoke_access">Revoke Access</string>
     <string name="btn_logout_from_google">Sign Out</string>
     <string name="enter">Enter</string>
+    <string name="subject_combo">* English Language is a general Subject and thus has been selected by default. Choose any other three subject.</string>
 </resources>
