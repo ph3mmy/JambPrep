@@ -3,6 +3,7 @@ package ng.com.jcedar.jambprep.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 
@@ -28,6 +29,7 @@ public class PrefUtils {
     public static  final String PERSON_KEY = "personal_key";
     public static  final String EMAIL_KEY = "email_key";
     public static  final String PHOTO_KEY = "photo_key";
+    public static  final String UNIQUE_KEY = "unique_id";
 
 
 
@@ -126,6 +128,16 @@ public class PrefUtils {
         return preferences.getString(PERSON_KEY, "0");
     }
 
+    public static void setUniqueId(Context context, String key){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().putString(UNIQUE_KEY, key).commit();
+    }
+
+    public static String getUniqueId(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(UNIQUE_KEY, "0");
+    }
+
     public static void setEmail(Context context, String key){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         preferences.edit().putString(EMAIL_KEY, key).commit();
@@ -154,6 +166,13 @@ public class PrefUtils {
         byte[] b = baos.toByteArray();
         String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
         return imageEncoded;
+    }
+
+    // method for base64 to bitmap
+    public static Bitmap decodeBase64(String input) {
+        byte[] decodedByte = Base64.decode(input, 0);
+        return BitmapFactory
+                .decodeByteArray(decodedByte, 0, decodedByte.length);
     }
 
 }

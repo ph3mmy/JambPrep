@@ -1,8 +1,11 @@
 package ng.com.jcedar.jambprep.ui.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import ng.com.jcedar.jambprep.R;
 import ng.com.jcedar.jambprep.ui.BaseActivity;
@@ -12,6 +15,8 @@ import ng.com.jcedar.jambprep.ui.NavigationDrawerFragment;
  * Created by oluwafemi.bamisaye on 1/15/2016.
  */
 public class ProfileActivity extends BaseActivity {
+
+    private static boolean quit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,26 @@ public class ProfileActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    boolean doubleBackToExitPressedOnce = false;
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 
     @Override

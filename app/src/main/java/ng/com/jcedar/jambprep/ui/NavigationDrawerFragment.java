@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -87,6 +90,8 @@ public class NavigationDrawerFragment extends Fragment {
     private NavDrawerAdapter mNavDrawerAdapter;
     private int lastItemChecked;
     private Handler mHandler;
+    private TextView emailText, nameText;
+    private ImageView profileImg;
     String role = "AppSettings.Role.MARKET_OPERATOR";
 
     public NavigationDrawerFragment() {
@@ -127,6 +132,24 @@ public class NavigationDrawerFragment extends Fragment {
         ViewGroup root = (ViewGroup) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView = (ListView) root.findViewById(R.id.drawer_listview);
+
+        emailText = (TextView) root.findViewById(R.id.profile_name_text);
+        nameText = (TextView) root.findViewById(R.id.profile_role_text);
+        profileImg = (ImageView) root.findViewById(R.id.profile_image);
+
+        emailText.setText(PrefUtils.getEmail(getActivity()));
+        nameText.setText(PrefUtils.getPersonal(getActivity()));
+
+        Log.e(TAG, "SAVED EMAIL    "  + emailText   +   nameText);
+
+        Bitmap bitmap = PrefUtils.decodeBase64(PrefUtils.getPhoto(getActivity()));
+        if (bitmap != null){
+
+            profileImg.setImageBitmap(bitmap);
+        }else
+        profileImg.setImageDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
+
+
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -26,11 +26,18 @@
             android:paddingRight="@dimen/keyline_1"
             android:paddingTop="@dimen/keyline_1">
 
-            <ng.com.jcedar.jambprep.ui.view.BezelImageView
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:paddingTop="@dimen/keyline_1">
+
+        <ng.com.jcedar.jambprep.ui.view.BezelImageView
                 android:id="@+id/profile_image"
                 android:layout_width="@dimen/navdrawer_profile_image_size"
                 android:layout_height="@dimen/navdrawer_profile_image_size"
                 android:scaleType="centerCrop"
+                android:layout_centerInParent="true"
                 android:src="@mipmap/ic_launcher"
                 app:maskDrawable="@drawable/circle_mask" />
 
@@ -38,13 +45,13 @@
                 android:id="@+id/profile_role_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/profile_image"
+                android:gravity="center"
+                android:layout_below="@+id/profile_name_text"
                 android:layout_alignParentBottom="true"
-                android:ellipsize="end"
                 android:maxLines="1"
-                android:paddingBottom="16dp"
+                android:paddingBottom="0dp"
                 android:singleLine="true"
-                android:text="Admin"
+                android:text="Name"
                 android:textColor="@color/body_text_2_inverse"
                 android:textSize="@dimen/text_size_medium" />
 
@@ -52,15 +59,16 @@
                 android:id="@+id/profile_name_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/profile_role_text"
-                android:layout_alignLeft="@id/profile_image"
-
+                android:layout_below="@+id/profile_image"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:text="tosin.salami@powercollectng.com"
                 android:textColor="@color/body_text_1_inverse"
                 android:textSize="@dimen/text_size_sixteen" />
+            </RelativeLayout>
 
         </RelativeLayout>
 

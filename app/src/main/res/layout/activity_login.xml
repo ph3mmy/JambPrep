@@ -192,7 +192,7 @@
 
 
 
-        <LinearLayout
+<!--        <LinearLayout
             android:id="@+id/button_container"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_width="match_parent"
@@ -201,7 +201,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/transparent_button1"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content">-->
             <com.dd.CircularProgressButton
                 android:id="@+id/btn_enter"
                 android:layout_width="match_parent"
@@ -213,28 +213,28 @@
                 app:cpb_selectorIdle="@drawable/button_color_selector"
                 app:cpb_colorIndicator="@color/theme_primary"
                 android:textColor="@color/theme_primary"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:visibility="gone"/>
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
 
-        <!--<Button-->
-            <!--android:id="@+id/btn_enter"-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:layout_marginTop="20dp"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:background="@drawable/transparent_button1"-->
-            <!--android:text="@string/enter" />-->
+        <Button
+            android:id="@+id/btn_sign_in"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white"
+            android:background="@drawable/transparent_button1"
+            android:text="@string/enter" />
 
-        <com.google.android.gms.common.SignInButton
+<!--        <com.google.android.gms.common.SignInButton
             android:id="@+id/btn_sign_in"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:visibility="gone"/>
+            android:layout_marginRight="20dp"/>-->
 
         </LinearLayout>
 

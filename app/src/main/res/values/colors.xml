@@ -70,7 +70,7 @@
     <color name="style_color_primary_dark">#21425d</color>
     <!--<color name="style_color_accent">#01bcd5</color>-->
     <color name="style_color_accent">#CC6600</color>
-    <color name="session_photo_scrim">#6000</color>
+    <color name="session_photo_scrim">#b3000000</color>
     <color name="transparent_black">#FFFFFFFF</color>
 
     <color name="NiceButtonStartColor">#f39216</color>

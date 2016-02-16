@@ -32,8 +32,8 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Result;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.Person;
+//import com.google.android.gms.plus.Plus;
+//import com.google.android.gms.plus.model.people.Person;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +53,7 @@ import ng.com.jcedar.jambprep.ui.BaseActivity;
 /**
  * Created by oluwafemi.bamisaye on 1/26/2016.
  */
-public class LoginActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, View.OnClickListener {
+public class LoginActivity extends BaseActivity /*implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, View.OnClickListener*/ {
 
     private static final String TAG = LoginActivity.class.getName();
     private static final int RC_SIGN_IN = 0;
@@ -94,7 +94,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+/*        setContentView(R.layout.activity_login);
 
 
         btnSignIn = (CircularProgressButton) findViewById(R.id.btn_enter);
@@ -110,7 +110,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         llField = (LinearLayout) findViewById(R.id.llField);
         etPhone = (EditText) findViewById(R.id.etPhone);
         etName = (EditText) findViewById(R.id.etName_login);
-        buttonContainer = (LinearLayout) findViewById(R.id.button_container);
+//        buttonContainer = (LinearLayout) findViewById(R.id.button_container);
 //        btEnter = (Button) findViewById(R.id.btn_enter);
 
         // Button click listeners
@@ -212,9 +212,9 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
     }
 
 
-    /**
+    *//**
      * Sign-in into google
-     * */
+     * *//*
     private void signInWithGplus() {
         if (!mGoogleApiClient.isConnecting()) {
             mSignInClicked = true;
@@ -222,9 +222,9 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         }
     }
 
-    /**
+    *//**
      * Method to resolve any signin errors
-     * */
+     * *//*
     private void resolveSignInError() {
         if (mConnectionResult.hasResolution()) {
             try {
@@ -263,9 +263,9 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         updateUI(false);
     }
 
-    /**
+    *//**
      * Updating the UI, showing/hiding buttons and profile layout
-     * */
+     * *//*
     private void updateUI(boolean isSignedIn) {
         if (isSignedIn) {
 //            btnSignIn.setVisibility(View.GONE);
@@ -294,9 +294,9 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
     }
 
 
-    /**
+    *//**
      * Fetching user's information name, email, profile pic
-     * */
+     * *//*
     private void getProfileInformation() {
         try {
             if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
@@ -332,9 +332,9 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         }
     }
 
-    /**
+    *//**
      * Background Async task to load user profile picture from url
-     * */
+     * *//*
     private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -371,8 +371,8 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
 //            btnSignIn.setEnabled(true);
             PrefUtils.setPhoto(LoginActivity.this, result);
-            /*String m = PrefUtils.encodeTobase64(result);
-            Log.e(TAG, "Encoded Profile image " + m);*/
+            *//*String m = PrefUtils.encodeTobase64(result);
+            Log.e(TAG, "Encoded Profile image " + m);*//*
 
         }
     }
@@ -445,9 +445,9 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
     }
 
-    /**
+    *//**
      * Revoking access from google
-     * */
+     * *//*
 
 
     private void registerUser() {
@@ -468,12 +468,12 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                /*super.onPreExecute();
+                *//*super.onPreExecute();
                 progressDialog.setMessage("Verifying email address....");
                 progressDialog.setTitle("Please Wait");
                 progressDialog.setCancelable(false);
                 progressDialog.setIndeterminate(true);
-                progressDialog.show();*/
+                progressDialog.show();*//*
 
                 buttonContainer.setBackgroundResource(R.drawable.t_button);
                 btnSignIn.setIndeterminateProgressMode(true);
@@ -562,9 +562,9 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
     }
 
-    /**
+    *//**
      * Sign-out from google
-     * */
+     * *//*
     private void signOutFromGplus() {
         if (mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
@@ -572,7 +572,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
             mGoogleApiClient.connect();
             updateUI(false);
         }
-    }
+    }*/
 
 /*    class LoginCheck extends AsyncTask<String,Void,Void> {
 
@@ -693,4 +693,4 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
     }*/
 
-}
+}}
