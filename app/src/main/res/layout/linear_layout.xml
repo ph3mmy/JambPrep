@@ -1,0 +1,203 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    >
+
+<!--    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SELECT Fruit"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:layout_gravity="center_horizontal"
+        />-->
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="English Language"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/element_spacing_normal"
+        android:paddingBottom="5dp"
+        android:button="@null"
+        android:drawableRight="@drawable/custom_checkbox"
+        android:enabled="false"
+        android:editable="false"
+        android:checked="true"
+        android:id="@+id/english" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/element_spacing_normal"
+        android:button="@null"
+        android:drawableRight="@drawable/custom_checkbox"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:onClick="selectItems"
+        android:text="Accounting"
+        android:id="@+id/accounting" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/element_spacing_normal"
+        android:button="@null"
+        android:drawableRight="@drawable/custom_checkbox"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:onClick="selectItems"
+        android:text="Agriculture"
+        android:id="@+id/agric" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/element_spacing_normal"
+        android:button="@null"
+        android:drawableRight="@drawable/custom_checkbox"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:onClick="selectItems"
+        android:text="Biology"
+        android:id="@+id/biology" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/element_spacing_normal"
+        android:button="@null"
+        android:drawableRight="@drawable/custom_checkbox"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:text="Chemistry"
+        android:onClick="selectItems"
+        android:id="@+id/chemistry" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/element_spacing_normal"
+        android:button="@null"
+        android:drawableRight="@drawable/custom_checkbox"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:onClick="selectItems"
+        android:text="Christian Religious Knowledge"
+        android:id="@+id/crk" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/element_spacing_normal"
+        android:button="@null"
+        android:drawableRight="@drawable/custom_checkbox"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:onClick="selectItems"
+        android:text="Commerce"
+        android:id="@+id/comm" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/element_spacing_normal"
+        android:button="@null"
+        android:drawableRight="@drawable/custom_checkbox"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:onClick="selectItems"
+        android:text="Economics"
+        android:id="@+id/economics" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/element_spacing_normal"
+        android:button="@null"
+        android:drawableRight="@drawable/custom_checkbox"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:onClick="selectItems"
+        android:text="Geography"
+        android:id="@+id/geography" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/element_spacing_normal"
+        android:button="@null"
+        android:drawableRight="@drawable/custom_checkbox"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:onClick="selectItems"
+        android:text="Government"
+        android:id="@+id/govt" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/element_spacing_normal"
+        android:button="@null"
+        android:drawableRight="@drawable/custom_checkbox"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:onClick="selectItems"
+        android:text="Literature-In-English"
+        android:id="@+id/literature" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/element_spacing_normal"
+        android:button="@null"
+        android:drawableRight="@drawable/custom_checkbox"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:onClick="selectItems"
+        android:text="Mathematics"
+        android:id="@+id/maths" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/element_spacing_normal"
+        android:button="@null"
+        android:drawableRight="@drawable/custom_checkbox"
+        android:textColor="#666666"
+        android:paddingBottom="5dp"
+        android:onClick="selectItems"
+        android:text="Physics"
+        android:id="@+id/physics" />
+
+
+        />
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:layout_gravity="center_horizontal"
+        android:onClick="Selection"
+
+        />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/final_result"
+        android:text="Hello world"
+
+        />
+
+</LinearLayout>
