@@ -122,6 +122,7 @@ public class Login extends BaseActivity implements GoogleApiClient.OnConnectionF
         etName = (EditText) findViewById(R.id.etName_login);
 //        buttonContainer = (LinearLayout) findViewById(R.id.button_container);
         btEnter = (CircularProgressButton) findViewById(R.id.btn_enter);
+        btEnter.setIndeterminateProgressMode(true);
 
         // Button click listeners
         btnSignIn.setOnClickListener(this);
@@ -288,13 +289,16 @@ public class Login extends BaseActivity implements GoogleApiClient.OnConnectionF
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+            super.onPreExecute();/*
             btEnter.setVisibility(View.VISIBLE);
             btEnter.setIndeterminateProgressMode(true);
-            btEnter.setProgress(50);
+            btEnter.setProgress(50);*/
+            showpDialog();
+            Toast.makeText(Login.this, "Please Wait.....", Toast.LENGTH_SHORT).show();
         }
 
         protected Bitmap doInBackground(String... urls) {
+            hidepDialog();
             String urldisplay = urls[0];
             Bitmap mIcon11 = null;
             try {
@@ -374,10 +378,12 @@ public class Login extends BaseActivity implements GoogleApiClient.OnConnectionF
         }else
 
         startActivityForResult(signInIntent, RC_SIGN_IN);
-        btnSignIn.setVisibility(View.GONE);
+        btnSignIn.setVisibility(View.GONE);/*
         btEnter.setVisibility(View.VISIBLE);
         btEnter.setIndeterminateProgressMode(true);
-        btEnter.setProgress(50);
+        btEnter.setProgress(50);*/
+        showpDialog();
+        Toast.makeText(this, "Signing In" ,  Toast.LENGTH_SHORT).show();
     }
     // [END signIn]
 
@@ -416,9 +422,11 @@ public class Login extends BaseActivity implements GoogleApiClient.OnConnectionF
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                btEnter.setVisibility(View.VISIBLE);
+               /* btEnter.setVisibility(View.VISIBLE);
                 btEnter.setIndeterminateProgressMode(true);
-                btEnter.setProgress(50);
+                btEnter.setProgress(50);*/
+                showpDialog();
+                Toast.makeText(Login.this, "Registering User, Please be Patient", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -448,8 +456,9 @@ public class Login extends BaseActivity implements GoogleApiClient.OnConnectionF
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
 //                progressDialog.dismiss();
-                btEnter.setVisibility(View.GONE);
+//                btEnter.setVisibility(View.GONE);
                 Toast.makeText(Login.this, s, Toast.LENGTH_SHORT).show();
+                hidepDialog();
 
                 Log.e(TAG, "isSignedIn before Subject combination  " + isSignedIn);
                 if (s.contains("success")){
@@ -565,5 +574,19 @@ public class Login extends BaseActivity implements GoogleApiClient.OnConnectionF
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
+    }
+
+    private void showpDialog() {
+        if (btEnter.getProgress() == 0) {
+            btEnter.setVisibility(View.VISIBLE);
+            btEnter.setProgress(50);
+        }
+    }
+
+    private void hidepDialog() {
+        if (btEnter.getProgress() == 100) {
+            btEnter.setProgress(0);
+            btEnter.setVisibility(View.GONE);
+        }
     }
 }
