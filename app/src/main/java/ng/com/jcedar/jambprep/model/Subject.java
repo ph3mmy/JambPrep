@@ -1,41 +1,23 @@
 package ng.com.jcedar.jambprep.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+
 /**
- * Created by oluwafemi.bamisaye on 2/13/2016.
+ * Created by Seyi.Afolayan on 2/19/2016.
  */
 public class Subject {
-    private String name;
-    private Boolean box;
-    private int id;
 
+    @SerializedName(value="1")
+    private ArrayList<Question> english;
 
-    public Subject(String name, boolean box, int id){
-        this.name = name;
-        this.box = box;
-        this.id = id;
-    }
+    @SerializedName(value="2")
+    private ArrayList<Question> subject2;
 
-    public int getId() {
-        return id;
-    }
+    @SerializedName(value="3")
+    private ArrayList<Question> subject3;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Boolean getBox() {
-        return box;
-    }
-
-    public void setBox(Boolean box) {
-        this.box = box;
-    }
+    @SerializedName(value="4")
+    private ArrayList<Question> subject4;
 }

@@ -1,5 +1,6 @@
 package ng.com.jcedar.jambprep.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import ng.com.jcedar.jambprep.R;
+import ng.com.jcedar.jambprep.helper.PrefUtils;
 import ng.com.jcedar.jambprep.ui.BaseActivity;
 import ng.com.jcedar.jambprep.ui.NavigationDrawerFragment;
 
@@ -64,6 +66,15 @@ public class ProfileActivity extends BaseActivity {
                 doubleBackToExitPressedOnce = false;
             }
         }, 2000);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        if ( !PrefUtils.isDataBootstrapDone(this)){
+            startActivity( new Intent( this, CombinationActivity.class));
+        }
     }
 
     @Override
