@@ -56,4 +56,6 @@
     <string name="btn_logout_from_google">Sign Out</string>
     <string name="enter">Enter</string>
     <string name="subject_combo">* English Language is a general Subject and thus has been selected by default. Choose any other three subject.</string>
+    <string name="timed_out">Connection Time Out</string>
+    <string name="generic_error">Unable to get data at this time</string>
 </resources>

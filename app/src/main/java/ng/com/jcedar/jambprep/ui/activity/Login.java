@@ -126,21 +126,11 @@ public class Login extends BaseActivity implements GoogleApiClient.OnConnectionF
 
         // Button click listeners
         btnSignIn.setOnClickListener(this);
-//        btEnter.setOnClickListener(this);
-//        btnRevokeAccess.setOnClickListener(this);
 
-
-        // [START configure_signin]
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        // [END configure_signin]
 
-        // [START build_client]
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -157,8 +147,7 @@ public class Login extends BaseActivity implements GoogleApiClient.OnConnectionF
 
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
-            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-            // and the GoogleSignInResult will be available instantly.
+
             Log.d(TAG, "Got cached sign-in");/*
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);*/
@@ -417,14 +406,9 @@ public class Login extends BaseActivity implements GoogleApiClient.OnConnectionF
     private void register(String name, String phone, String email, String uuid, String rName) {
         String urlSuffix = "?name=" + rName+":"+name + "&phone=" + phone + "&email=" + email + "&regId=" + uuid;
         class RegisterUser extends AsyncTask<String, Void, String> {
-//            ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
 
             @Override
             protected void onPreExecute() {
-                super.onPreExecute();
-               /* btEnter.setVisibility(View.VISIBLE);
-                btEnter.setIndeterminateProgressMode(true);
-                btEnter.setProgress(50);*/
                 showpDialog();
                 Toast.makeText(Login.this, "Registering User, Please be Patient", Toast.LENGTH_SHORT).show();
             }
@@ -454,9 +438,7 @@ public class Login extends BaseActivity implements GoogleApiClient.OnConnectionF
 
             @Override
             protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-//                progressDialog.dismiss();
-//                btEnter.setVisibility(View.GONE);
+                super.onPostExecute(s); ;
                 Toast.makeText(Login.this, s, Toast.LENGTH_SHORT).show();
                 hidepDialog();
 

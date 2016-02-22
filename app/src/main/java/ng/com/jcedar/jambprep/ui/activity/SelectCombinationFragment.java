@@ -23,7 +23,7 @@ import ng.com.jcedar.jambprep.R;
 /**
  * Created by oluwafemi.bamisaye on 2/16/2016.
  */
-public class Combi extends DialogFragment {
+public class SelectCombinationFragment extends DialogFragment {
 
 
 
@@ -53,6 +53,7 @@ public class Combi extends DialogFragment {
         builder.setTitle("Combination Dialog");
 
 
+        setCancelable(false);
         Dialog dialog = builder.create();
         return dialog;
     }
