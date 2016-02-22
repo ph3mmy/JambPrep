@@ -1,45 +1,46 @@
 package ng.com.jcedar.jambprep.ui.activity;
 
-import android.app.FragmentManager;
+import android.content.ContentProviderOperation;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.OperationApplicationException;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.dd.CircularProgressButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Method;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import ng.com.jcedar.jambprep.R;
-import ng.com.jcedar.jambprep.adapter.SubjectListAdapter;
 import ng.com.jcedar.jambprep.helper.AppSettings;
 import ng.com.jcedar.jambprep.helper.PrefUtils;
-import ng.com.jcedar.jambprep.model.Subject;
+import ng.com.jcedar.jambprep.jsonhandlers.QuestionHandler;
+import ng.com.jcedar.jambprep.provider.DataContract;
+import ng.com.jcedar.jambprep.provider.DatabaseHelper;
 import ng.com.jcedar.jambprep.ui.BaseActivity;
-import ng.com.jcedar.jambprep.volley.AppController;
+import ng.com.jcedar.jambprep.volley.PrepApi;
 
 /**
  * Created by oluwafemi.bamisaye on 2/3/2016.
@@ -48,26 +49,17 @@ public class CombinationActivity extends BaseActivity {
 
     private static final String TAG = CombinationActivity.class.getSimpleName();
 
-    LinearLayout linearLayout;
-    Button btProceed;
-
     Snackbar snackbar;
-    private View view;
-    Combi c = new Combi();
 
     HashMap<String, Integer> selection = new HashMap<String, Integer>();
-    TextView final_text;
     String questionUrl;
     CircularProgressButton pDialog;
-    String jsonResponse;
+    final Context mContext = CombinationActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_combination);
-
-        final_text = (TextView) findViewById(R.id.final_result);
-        final_text.setEnabled(false);
 
         pDialog = (CircularProgressButton) findViewById(R.id.pdialog);
         pDialog.setIndeterminateProgressMode(true);
@@ -78,9 +70,8 @@ public class CombinationActivity extends BaseActivity {
     public void selectItems(View view) {
         boolean checked = ((CheckBox) view).isChecked();
         selection.put("English Language", 2);
-        switch (view.getId())
 
-        {
+        switch (view.getId()) {
             case R.id.accounting:
                 if (checked) {
                     selection.put("Accounting", 10);
@@ -175,161 +166,176 @@ public class CombinationActivity extends BaseActivity {
 
     public void FinalSelection(View view) {
 
-        FragmentManager manager = getFragmentManager();
+        /*FragmentManager manager = getFragmentManager();
         selection.clear();
-        c.show(manager, "combi Dialog");
+        c.show(manager, "combi Dialog");*/
 
-
-        /*String final_fruit_selection = "";
-
-        if (selection.size() == 4) {
-            for (Integer selections : selection.values()) {
-                final_fruit_selection = final_fruit_selection + selections + "\n";
-
-            }
-            String result = selection.toString();
-            Toast.makeText(this, "Your selected Subjects are \n" + result, Toast.LENGTH_SHORT).show();
-            final_text.setText(final_fruit_selection);
-            final_text.setEnabled(true);
-        }else
-            snackbar.make(view,"You can only select 4 Subjects",Snackbar.LENGTH_SHORT).show();*/
     }
 
-    public void Selection(View view) {
+    public void selection(View view) {
 
+        final Uri.Builder uriBuilder = Uri.parse(AppSettings.SERVER_URL).buildUpon()
+                .appendPath("InsertUserSubject.php");
 
         ArrayList<Integer> selectedIds = new ArrayList<>();
-        Integer[] selected;
+        final Integer[] selected;
         String final_fruit_selection = "";
-//        selected = new Integer[4];
-//        selected = selection.values();
-//        selected = selectedIds.toArray( selected );
 
         if (selection.size() == 4) {
-            for (Integer selections : selection.values()) {
+            /*for (Integer selections : selection.values()) {
                 final_fruit_selection = final_fruit_selection + selections + "\n";
 
-            }
-             selected = selection.values().toArray(new Integer[0]);
+            }*/
+            selected = selection.values().toArray(new Integer[0]);
             String result = selection.toString();
             Toast.makeText(this, "Your selected Subjects are \n" + result, Toast.LENGTH_SHORT).show();
-            /*final_text.setText(final_fruit_selection);
-            final_text.setEnabled(true);*/
-
             String uId = PrefUtils.getUniqueId(this);
-            String forUrl="";
+
             int urlIndex = 1;
-            for( int i=0; i < selected.length; i++ ){
-                if ( selected[i] == 2) continue;
-                if ( i == selected.length - 1)
-                    forUrl += "subject"+urlIndex++ +"="+selected[i];
-                else
-                    forUrl += "subject"+urlIndex++ +"=" +selected[i]+"&";
+            for (Integer aSelected : selected) {
+                if (aSelected == 2) continue;
+                uriBuilder.appendQueryParameter("subject" + urlIndex, aSelected + "");
+                urlIndex++;
             }
-            Log.e(TAG, "Converted arrays  " + forUrl);
-            questionUrl = AppSettings.SERVER_URL+"InsertUserSubject.php?"+forUrl+"&userId="+uId;
-   /*         Intent dash = new Intent(CombinationActivity.this, ProfileActivity.class);
+            uriBuilder.appendQueryParameter("userId", uId);
 
-            Log.e(TAG, " question url  " + questionUrl);
-            dash.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(dash);*/
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.create().setMessage("You have selected " + selection + "\nAre you sure you want to continue?");
+            builder.setTitle("Selected Subjects")
+                    .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    questionUrl = uriBuilder.build().toString();
+                    Log.e(TAG, "Converted questionUrl  " + questionUrl);
+                    makeSubjectRequest( questionUrl );
 
-            Log.e(TAG, "Converted questionUrl arrays  " + questionUrl);
-            final_text.setText(questionUrl);
-            c.dismiss();
+                }
+            }).setNegativeButton("Change", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    uriBuilder.clearQuery();
+                    Log.e(TAG, "Converted questionUrl clear " + uriBuilder.build().toString());
+                }
+            }).show();
 
 
-            makeSubjectRequest();
-//            requ(questionUrl);
         }else
             snackbar.make(view,"You can only select 4 Subjects",Snackbar.LENGTH_SHORT).show();
     }
 
-    public void makeSubjectRequest(){
+    public void makeSubjectRequest(String url){
+        Log.d(TAG, "inside make subject   " + url);
 
-        Log.d(TAG, "inside make subject   ");
+        showDialog();
 
-        RequestQueue rq = Volley.newRequestQueue(this);
-        showpDialog();
-        JsonArrayRequest subjectArrayRequest = new JsonArrayRequest(questionUrl, new Response.Listener<JSONArray>() {
+        Response.Listener<String> onSuccess = new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONArray jsonArray) {
-                Log.e(TAG, "inside make subject   " + jsonArray.toString());
+            public void onResponse(String s) {
+                //parse something
 
+
+
+
+
+
+
+                pullAndSaveQuestions(s);
+                hideDialog();
+                startActivity( new Intent( mContext, ProfileActivity.class));
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.e(TAG, "Error: " + volleyError.getMessage());
+                hideDialog();
+
+            }
+        };
+        PrepApi.getInstance().getSubjects(url, onSuccess, errorListener);
+    }
+
+    private void pullAndSaveQuestions(final String json) {
+        new Thread(new Runnable() {
+            public void run() {
                 try {
-                    // Parsing json array response
-                    // loop through each json object
-                    jsonResponse = "";
-                    for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = new JSONObject(json);
+                    JSONArray english, subject1, subject2, subject3;
 
-                        JSONObject question = (JSONObject) jsonArray.get(i);
+                    english = jsonObject.getJSONArray("1");
+                    Log.e(TAG, "array " +english.toString());
 
-                        String year = question.getString("exam_year");
-                        String questions = question.getString("questions");
-                        String optionA = question.getString("option_a");
-                        String optionB = question.getString("option_b");
-                        String optionC = question.getString("option_c");
-                        String optionD = question.getString("option_d");
-                        String optionE = question.getString("option_e");
-                        String answer = question.getString("answer");
-                        String explanation = question.getString("explanation");
-                        String photo = question.getString("photo");
-                        String answerPhoto = question.getString("answer_photo");
-
-                        jsonResponse += "Year: " + year + "\n\n";
-                        jsonResponse += "Question: " + questions + "\n\n";
-                        jsonResponse += "OptionD: " + optionD + "\n\n";
-                        jsonResponse += "Answer: " + answer + "\n\n\n";
+                    ArrayList<ContentProviderOperation> operation =
+                            new QuestionHandler(mContext)
+                                    .parse(english.toString(), 1);
+                    if (operation.size() > 0) {
+                        ContentResolver resolver = getContentResolver();
+                        resolver.applyBatch(DataContract.CONTENT_AUTHORITY, operation);
 
                     }
 
-                    Log.e(TAG, "Printed JSONARRAY  " + jsonResponse);
+                    subject1 = jsonObject.getJSONArray("2");
+                    Log.e(TAG, "array1 " +subject1.toString());
 
-//                    txtResponse.setText(jsonResponse);
+                    ArrayList<ContentProviderOperation> operation1 =
+                            new QuestionHandler(mContext)
+                                    .parse(subject1.toString(), 2);
+                    if (operation1.size() > 0) {
+                        ContentResolver resolver = getContentResolver();
+                        resolver.applyBatch(DataContract.CONTENT_AUTHORITY, operation1);
 
-                } catch (JSONException e) {
+                    }
+
+                    subject2 = jsonObject.getJSONArray("3");
+                    Log.e(TAG, "array2 " +subject2.toString());
+
+                    ArrayList<ContentProviderOperation> operation2 =
+                            new QuestionHandler(mContext)
+                                    .parse(subject2.toString(), 3);
+                    if (operation2.size() > 0) {
+                        ContentResolver resolver = getContentResolver();
+                        resolver.applyBatch(DataContract.CONTENT_AUTHORITY, operation2);
+
+                    }
+
+                    subject3 = jsonObject.getJSONArray("4");
+                    Log.e(TAG, "array3 " +subject3.toString());
+
+
+                    ArrayList<ContentProviderOperation> operations =
+                            new QuestionHandler(mContext)
+                                    .parse(subject3.toString(), 4);
+                    if (operations.size() > 0) {
+                        ContentResolver resolver = getContentResolver();
+                        resolver.applyBatch(DataContract.CONTENT_AUTHORITY, operations);
+
+                    }
+
+
+                    PrefUtils.markDataBootstrapDone( mContext );
+                } catch (RemoteException | OperationApplicationException | JSONException | IOException e) {
                     e.printStackTrace();
-                    hidepDialog();
-                    Toast.makeText(getApplicationContext(),
-                            "Error: " + e.getMessage(),
-                            Toast.LENGTH_SHORT).show();
                 }
-
             }
-        },new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-                hidepDialog();
-                Toast.makeText(CombinationActivity.this,
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Adding request to request queue
-        rq.add(subjectArrayRequest);
-
-//        AppController.getInstance().addToRequestQueue(subjectArrayRequest);
+        }).start();
     }
 
-    private void showpDialog() {
+    private void showDialog() {
         if (pDialog.getProgress() == 0) {
             pDialog.setVisibility(View.VISIBLE);
             pDialog.setProgress(50);
         }
     }
 
-    private void hidepDialog() {
+    private void hideDialog() {
         if (pDialog.getProgress() == 100) {
             pDialog.setProgress(0);
             pDialog.setVisibility(View.GONE);
         }
     }
 
-//    @Override
-//    public void requ(String url) {
-//        makeSubjectRequest(url);
-//    }
 }
 
 

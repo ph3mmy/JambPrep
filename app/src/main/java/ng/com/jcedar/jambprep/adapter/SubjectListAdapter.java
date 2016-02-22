@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import ng.com.jcedar.jambprep.R;
 import ng.com.jcedar.jambprep.model.Subject;
+import ng.com.jcedar.jambprep.model.SubjectSelection;
 import ng.com.jcedar.jambprep.ui.activity.CombinationActivity;
 
 /**
@@ -23,9 +24,9 @@ public class SubjectListAdapter extends BaseAdapter {
 
     Context ctx;
     LayoutInflater inflater;
-    ArrayList<Subject> subject;
+    ArrayList<SubjectSelection> subject;
 
-    public SubjectListAdapter(Context context, ArrayList<Subject> subjects){
+    public SubjectListAdapter(Context context, ArrayList<SubjectSelection> subjects){
         ctx = context;
         inflater = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         subject = subjects;
@@ -55,7 +56,7 @@ public class SubjectListAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.row_item_combination, parent, false);
         }
 
-        Subject sub = getSubject(position);
+        SubjectSelection sub = getSubject(position);
 
         ((TextView) view.findViewById(R.id.subName)).setText(sub.getName());
         CheckBox chkBox = (CheckBox) view.findViewById(R.id.chkBox);
@@ -72,13 +73,13 @@ public class SubjectListAdapter extends BaseAdapter {
 
     }
 
-    Subject getSubject(int position) {
-        return ((Subject) getItem(position));
+    SubjectSelection getSubject(int position) {
+        return ((SubjectSelection) getItem(position));
     }
 
-    public ArrayList<Subject> getBox() {
-        ArrayList<Subject> box = new ArrayList<Subject>();
-        for (Subject p : subject) {
+    public ArrayList<SubjectSelection> getBox() {
+        ArrayList<SubjectSelection> box = new ArrayList<SubjectSelection>();
+        for (SubjectSelection p : subject) {
             if (p.getBox())
                 box.add(p);
         }

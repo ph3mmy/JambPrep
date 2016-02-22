@@ -30,7 +30,7 @@ public class PrefUtils {
     public static  final String EMAIL_KEY = "email_key";
     public static  final String PHOTO_KEY = "photo_key";
     public static  final String UNIQUE_KEY = "unique_id";
-
+    public static final String PREF_DATA_BOOTSTRAP_DONE = "pref_data_bootstrap_done";
 
 
 
@@ -76,14 +76,16 @@ public class PrefUtils {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getBoolean(INITIALIZATION_STATUS, false);
     }
-    public static void setPostToSprite(Context context, boolean postToSprite){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putBoolean(POST_TO_SPRITE_STATUS, postToSprite).commit();
+    public static void markDataBootstrapDone(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putBoolean(PREF_DATA_BOOTSTRAP_DONE, true).commit();
     }
-    public static boolean isPostToSprite(Context context){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean(POST_TO_SPRITE_STATUS, false);
+
+    public static boolean isDataBootstrapDone(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getBoolean(PREF_DATA_BOOTSTRAP_DONE, false);
     }
+
     public static void setAccountTypeToSavings(Context context, boolean accountType){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         preferences.edit().putBoolean(ACCOUNT_TYPE_STATUS, accountType).commit();
