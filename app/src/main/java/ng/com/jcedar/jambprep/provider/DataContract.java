@@ -95,7 +95,7 @@ public class DataContract {
      public static class Subject2 implements QuestionColumns, BaseColumns, SyncColumns{
 
         public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PASSAGE).build();
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_SUBJECT_2).build();
 
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE +"/vnd.ng.com.jcedar.jambprep.provider.subject2";
@@ -119,7 +119,7 @@ public class DataContract {
      public static class Subject3 implements QuestionColumns, BaseColumns, SyncColumns{
 
         public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PASSAGE).build();
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_SUBJECT_3).build();
 
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE +"/vnd.ng.com.jcedar.jambprep.provider.subject3";

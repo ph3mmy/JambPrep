@@ -21,7 +21,6 @@ import java.util.List;
 import ng.com.jcedar.jambprep.helper.FormatUtils;
 import ng.com.jcedar.jambprep.helper.Lists;
 import ng.com.jcedar.jambprep.model.Question;
-import ng.com.jcedar.jambprep.model.Subject;
 import ng.com.jcedar.jambprep.provider.DataContract;
 
 /**
@@ -38,7 +37,7 @@ public class QuestionHandler extends JsonHandler {
     @Override
     public ArrayList<ContentProviderOperation> parse(String json, int where) throws IOException {
 
-        Log.e(TAG, TextUtils.isEmpty(json) ? "Empty json" : "Json is not empty");
+        Log.e(TAG+" "+where, TextUtils.isEmpty(json) ? "Empty json" : "Json is not empty");
 
         final ArrayList<ContentProviderOperation> batch = Lists.newArrayList();
         JSONArray array;
@@ -59,7 +58,7 @@ public class QuestionHandler extends JsonHandler {
             parseQuestionData(question, batch, where);
         }
 
-        return null;
+        return batch;
     }
 
     private void parseQuestionData(Question question,
@@ -107,6 +106,5 @@ public class QuestionHandler extends JsonHandler {
                 .withValue(DataContract.SyncColumns.UPDATED, FormatUtils.getCurrentDate());
 
         batch.add( builder.build() );
-        Log.e(TAG, question.getExamYear());
     }
 }
