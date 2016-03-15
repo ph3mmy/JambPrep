@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.OperationApplicationException;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -14,15 +13,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.dd.CircularProgressButton;
 
 import org.json.JSONArray;
@@ -38,7 +33,6 @@ import ng.com.jcedar.jambprep.helper.AppSettings;
 import ng.com.jcedar.jambprep.helper.PrefUtils;
 import ng.com.jcedar.jambprep.jsonhandlers.QuestionHandler;
 import ng.com.jcedar.jambprep.provider.DataContract;
-import ng.com.jcedar.jambprep.provider.DatabaseHelper;
 import ng.com.jcedar.jambprep.ui.BaseActivity;
 import ng.com.jcedar.jambprep.volley.PrepApi;
 
@@ -243,6 +237,7 @@ public class CombinationActivity extends BaseActivity {
                 pullAndSaveQuestions(s);
                 hideDialog();
                 startActivity( new Intent( mContext, ProfileActivity.class));
+                finish();
             }
         };
 
@@ -258,7 +253,7 @@ public class CombinationActivity extends BaseActivity {
     }
 
     private void pullAndSaveQuestions(final String json) {
-        new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             public void run() {
                 try {
                     JSONObject jsonObject = new JSONObject(json);
@@ -266,6 +261,16 @@ public class CombinationActivity extends BaseActivity {
 
                     english = jsonObject.getJSONArray("1");
                     Log.e(TAG, "array " +english.toString());
+
+                    subject1 = jsonObject.getJSONArray("2");
+                    Log.e(TAG, "array1 " +subject1.toString());
+
+                    subject2 = jsonObject.getJSONArray("3");
+                    Log.e(TAG, "array2 " +subject2.toString());
+
+                    subject3 = jsonObject.getJSONArray("4");
+                    Log.e(TAG, "array3 " +subject3.toString());
+
 
                     ArrayList<ContentProviderOperation> operation =
                             new QuestionHandler(mContext)
@@ -276,8 +281,7 @@ public class CombinationActivity extends BaseActivity {
 
                     }
 
-                    subject1 = jsonObject.getJSONArray("2");
-                    Log.e(TAG, "array1 " +subject1.toString());
+
 
                     ArrayList<ContentProviderOperation> operation1 =
                             new QuestionHandler(mContext)
@@ -288,10 +292,7 @@ public class CombinationActivity extends BaseActivity {
 
                     }
 
-                    subject2 = jsonObject.getJSONArray("3");
-                    Log.e(TAG, "array2 " +subject2.toString());
-
-                    ArrayList<ContentProviderOperation> operation2 =
+                      ArrayList<ContentProviderOperation> operation2 =
                             new QuestionHandler(mContext)
                                     .parse(subject2.toString(), 3);
                     if (operation2.size() > 0) {
@@ -299,9 +300,6 @@ public class CombinationActivity extends BaseActivity {
                         resolver.applyBatch(DataContract.CONTENT_AUTHORITY, operation2);
 
                     }
-
-                    subject3 = jsonObject.getJSONArray("4");
-                    Log.e(TAG, "array3 " +subject3.toString());
 
 
                     ArrayList<ContentProviderOperation> operations =
@@ -319,7 +317,8 @@ public class CombinationActivity extends BaseActivity {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        });
+        thread.start();
     }
 
     private void showDialog() {

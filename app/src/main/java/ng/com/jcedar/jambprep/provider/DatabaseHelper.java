@@ -57,7 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String SQL_CREATE_SUBJECT_1_TABLE = "CREATE TABLE "
             +Tables.SUBJECT_1 + " ("
             + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + DataContract.Subject1._ID + " INTEGER, "
+            + DataContract.Subject1.ID + " INTEGER, "
             + DataContract.Subject1.SUBJECT_ID + " VARCHAR NOT NULL, "
             + DataContract.Subject1.EXAM_YEAR + " VARCHAR NOT NULL, "
             + DataContract.Subject1.REF_TEXT_ID + " VARCHAR, "
